@@ -1,5 +1,5 @@
-/* Copyright 2022, Laboratorio de Microprocesadores 
- * Facultad de Ciencias Exactas y Tecnología 
+/* Copyright 2022, Laboratorio de Microprocesadores
+ * Facultad de Ciencias Exactas y Tecnología
  * Universidad Nacional de Tucuman
  * http://www.microprocesadores.unt.edu.ar/
  * Copyright 2022, Esteban Volentini <evolentini@herrera.unt.edu.ar>
@@ -32,62 +32,62 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef DIGITAL_H   /*! @cond    */
-#define DIGITAL_H   /*! @endcond */
+#ifndef BSP_H /*! @cond    */
+#define BSP_H /*! @endcond */
 
 /** @file plantilla.h
  **
- ** @brief Plantilla de archivos de cabecera 
+ ** @brief Plantilla de archivos de cabecera
  **
- **
- ** Plantilla para los archivos de cabeceras de las prácticos de las 
+ ** Plantilla para los archivos de cabeceras de las prácticos de las
  ** asignaturas Diseño Integrado de Sistemas Emebebidos y Sistemas Embebidos
  ** de Tiempo Real dictadas en de la Especialización en Integración de
  ** Sistemas Informaticos de la Univesidad Nacional de Tucumán
- ** 
+ **
  ** | RV | YYYY.MM.DD | Autor       | Descripción de los cambios              |
  ** |----|------------|-------------|-----------------------------------------|
  ** |  1 | 2022.08.27 | evolentini  | Version inicial del archivo             |
- ** 
- ** @defgroup plantilla Plantillas de Archivos
+ **
+ ** @defgroup plantilla Plantilals de Archivos
  ** @brief Plantillas de archivos normalizadas
- ** @{ 
+ ** @{
  */
 
 /* === Inclusiones de archivos externos ==================================== */
-#include <stdint.h>
-#include<stdbool.h>
 
+#include "digital.h"
 
 /* === Cabecera C++ ======================================================== */
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /* === Definicion y Macros publicos ======================================== */
 
 /* == Declaraciones de tipos de datos publicos ============================= */
 
-// Gestionamos las salidas digitales
-typedef struct digital_output_s * digital_output_t;
+typedef struct board_s
+{
+    digital_output_t ledRed;
+    digital_output_t ledGreen;
+    digital_output_t ledBlue;
+    digital_output_t ledRojo;
+    digital_output_t ledAmar;
+    digital_output_t ledVerde;
 
-// Gestionamos las entradas digitales
-typedef struct digital_input_s * digital_input_t; 
+    digital_input_t tec_1;
+    digital_input_t tec_2;
+    digital_input_t tec_3;
+    digital_input_t tec_4;
+
+} const * board_t;
 
 /* === Declaraciones de variables publicas ================================= */
 
 /* === Declaraciones de funciones publicas ================================= */
 
-digital_output_t DigitalOutputCreate( uint8_t gpio, uint8_t bit);
-void DigitalOutputActivate( digital_output_t output );
-void DigitalOutputDeactivate( digital_output_t output);
-void DigitalOutputToggle( digital_output_t output);
-
-digital_input_t DigitalInputCreate( uint8_t gpio, uint8_t bit, bool inverted);
-bool DigitalInputGetState(digital_input_t input);
-bool DigitalInputHasChanged(digital_input_t input);
-bool DigitalInputHasActivated(digital_input_t input);
-bool DigitalInputHasDeactivated(digital_input_t input);
+board_t BoardCreate(void);
 
 /* === Ciere de documentacion ============================================== */
 #ifdef __cplusplus
@@ -96,4 +96,4 @@ bool DigitalInputHasDeactivated(digital_input_t input);
 
 /** @} Final de la definición del modulo para doxygen */
 
-#endif   /* PLANTILLA_H */
+#endif /* PLANTILLA_H */
