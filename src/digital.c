@@ -61,11 +61,11 @@
 /* === Definicion y Macros privados ======================================== */
 
 #ifndef OUTPUT_INSTANCES
-#define OUTPUT_INSTANCES 6
+#define OUTPUT_INSTANCES 7
 #endif
 
 #ifndef INTPUT_INSTANCES
-#define INTPUT_INSTANCES 4
+#define INTPUT_INSTANCES 6
 #endif
 
 /* === Declaraciones de tipos de datos privados ============================ */

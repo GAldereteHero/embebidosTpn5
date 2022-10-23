@@ -53,7 +53,7 @@
 /* === Inclusiones de cabeceras ============================================ */
 #include "chip.h"
 #include "bsp.h"
-#include "ciaa.h"
+#include "poncho.h"
 
 /* === Definicion y Macros privados ======================================== */
 
@@ -84,7 +84,6 @@ board_t BoardCreate(void){
     Chip_SCU_PinMuxSet(LED_B_PORT, LED_B_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_B_FUNC);
     board.ledBlue = DigitalOutputCreate(LED_B_GPIO, LED_B_BIT);
 
-    /******************/
     Chip_SCU_PinMuxSet(LED_1_PORT, LED_1_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_1_FUNC);
     board.ledRojo = DigitalOutputCreate(LED_1_GPIO, LED_1_BIT);
 
@@ -93,20 +92,28 @@ board_t BoardCreate(void){
 
     Chip_SCU_PinMuxSet(LED_3_PORT, LED_3_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_3_FUNC);
     board.ledVerde = DigitalOutputCreate(LED_3_GPIO, LED_3_BIT);
-
-    /******************/
-    Chip_SCU_PinMuxSet(TEC_1_PORT, TEC_1_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_1_FUNC);
-    board.tec_2 = DigitalInputCreate(TEC_2_GPIO, TEC_2_BIT, false);
-
-    Chip_SCU_PinMuxSet(TEC_2_PORT, TEC_2_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_2_FUNC);
-    board.tec_1 = DigitalInputCreate(TEC_1_GPIO, TEC_1_BIT, false);
-
-    Chip_SCU_PinMuxSet(TEC_3_PORT, TEC_3_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_3_FUNC);
-    board.tec_3 = DigitalInputCreate(TEC_3_GPIO, TEC_3_BIT, false);
-
-    Chip_SCU_PinMuxSet(TEC_4_PORT, TEC_4_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_4_FUNC);
-    board.tec_4 = DigitalInputCreate(TEC_4_GPIO, TEC_4_BIT, false);
     
+    Chip_SCU_PinMuxSet(TEC_F1_PORT, TEC_F1_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_F1_FUNC);
+    board.setTime = DigitalInputCreate(TEC_F1_GPIO, TEC_F1_BIT, false);
+    
+    Chip_SCU_PinMuxSet(TEC_F2_PORT, TEC_F2_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_F2_FUNC);
+    board.setAlarm = DigitalInputCreate(TEC_F2_GPIO, TEC_F2_BIT, false);
+
+    Chip_SCU_PinMuxSet(TEC_F3_PORT, TEC_F3_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_F3_FUNC);
+    board.decrement = DigitalInputCreate(TEC_F3_GPIO, TEC_F3_BIT, false);
+
+    Chip_SCU_PinMuxSet(TEC_F4_PORT, TEC_F4_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_F4_FUNC);
+    board.increment = DigitalInputCreate(TEC_F4_GPIO, TEC_F4_BIT, false);
+
+    Chip_SCU_PinMuxSet(TEC_ACCEPT_PORT, TEC_ACCEPT_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_ACCEPT_FUNC);
+    board.accept = DigitalInputCreate(TEC_ACCEPT_GPIO, TEC_ACCEPT_BIT, false);
+
+    Chip_SCU_PinMuxSet(TEC_CANCEL_PORT, TEC_CANCEL_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_CANCEL_FUNC);
+    board.cancel = DigitalInputCreate(TEC_CANCEL_GPIO, TEC_CANCEL_BIT, false);
+
+    Chip_SCU_PinMuxSet(BUZZER_PORT, BUZZER_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | BUZZER_FUNC);
+    board.buzzer = DigitalOutputCreate(BUZZER_GPIO, BUZZER_BIT);
+
     return &board;
 }
 

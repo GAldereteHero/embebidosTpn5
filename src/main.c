@@ -61,39 +61,52 @@
 
 int main(void) {
 
-    int divisor  = 0;
+    // int divisor  = 0;
     board_t board = BoardCreate();
 
     while (true) {
-        if (DigitalInputGetState(board->tec_1) == 0) {
+
+        if (DigitalInputGetState(board->setTime) == 0) {
+            DigitalOutputActivate(board->ledVerde);
+        } else {
+            DigitalOutputDeactivate(board->ledVerde);
+        }
+
+        if (DigitalInputGetState(board->setAlarm) == 0) {
+            DigitalOutputActivate(board->ledAmar);
+        } else {
+            DigitalOutputDeactivate(board->ledAmar);
+        }
+
+        if (DigitalInputGetState(board->decrement) == 0) {
+            DigitalOutputActivate(board->ledRojo);
+        } else {
+            DigitalOutputDeactivate(board->ledRojo);
+        }
+
+        if (DigitalInputGetState(board->increment) == 0) {
             DigitalOutputActivate(board->ledRed);
-            DigitalOutputActivate(board->ledGreen);
-            DigitalOutputActivate(board->ledBlue);
         } else {
             DigitalOutputDeactivate(board->ledRed);
+        }
+
+        if (DigitalInputGetState(board->accept) == 0) {
+            DigitalOutputActivate(board->ledGreen);
+        } else {
             DigitalOutputDeactivate(board->ledGreen);
+        }
+
+        if (DigitalInputGetState(board->cancel) == 0) {
+            DigitalOutputActivate(board->ledBlue);
+        } else {
             DigitalOutputDeactivate(board->ledBlue);
         }
 
-        if (DigitalInputHasActivated(board->tec_2)){
-            DigitalOutputToggle(board->ledRojo);
-
-        }
-
-        if (DigitalInputGetState(board->tec_3) == 0) {
-            DigitalOutputActivate(board->ledAmar);
-
-        }
-        if (DigitalInputGetState(board->tec_4)  == 0) {
-            DigitalOutputDeactivate(board->ledAmar);
-
-        }
-
-        divisor++;
-        if (divisor == 5) {
-            divisor = 0;
-            DigitalOutputToggle(board->ledVerde);
-        }
+        // divisor++;
+        // if (divisor == 5) {
+        //     divisor = 0;
+        //     DigitalOutputToggle(board->ledVerde);
+        // }
 
         for (int index = 0; index < 100; index++) {
             for (int delay = 0; delay < 25000; delay++) {

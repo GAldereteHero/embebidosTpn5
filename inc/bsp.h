@@ -56,6 +56,7 @@
 /* === Inclusiones de archivos externos ==================================== */
 
 #include "digital.h"
+#include "ciaa.h"
 
 /* === Cabecera C++ ======================================================== */
 #ifdef __cplusplus
@@ -76,10 +77,14 @@ typedef struct board_s
     digital_output_t ledAmar;
     digital_output_t ledVerde;
 
-    digital_input_t tec_1;
-    digital_input_t tec_2;
-    digital_input_t tec_3;
-    digital_input_t tec_4;
+    digital_input_t setTime;
+    digital_input_t setAlarm;
+    digital_input_t decrement;
+    digital_input_t increment;
+    digital_input_t accept;
+    digital_input_t cancel;
+
+    digital_output_t buzzer;
 
 } const * board_t;
 

@@ -98,30 +98,6 @@ extern "C" {
 #define LED_3_GPIO 1
 #define LED_3_BIT 12
 
-#define TEC_1_PORT 1
-#define TEC_1_PIN 0
-#define TEC_1_FUNC SCU_MODE_FUNC0
-#define TEC_1_GPIO 0
-#define TEC_1_BIT 4
-
-#define TEC_2_PORT 1
-#define TEC_2_PIN 1
-#define TEC_2_FUNC SCU_MODE_FUNC0
-#define TEC_2_GPIO 0
-#define TEC_2_BIT 8
-
-#define TEC_3_PORT 1
-#define TEC_3_PIN 2
-#define TEC_3_FUNC SCU_MODE_FUNC0
-#define TEC_3_GPIO 0
-#define TEC_3_BIT 9
-
-#define TEC_4_PORT 1
-#define TEC_4_PIN 6
-#define TEC_4_FUNC SCU_MODE_FUNC0
-#define TEC_4_GPIO 1
-#define TEC_4_BIT 9
-
 /* == Declaraciones de tipos de datos publicos ============================= */
 
 /* === Declaraciones de variables publicas ================================= */
