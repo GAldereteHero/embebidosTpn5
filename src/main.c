@@ -99,61 +99,63 @@ void SelectDigit(uint8_t digit){
 
 int main(void) {
 
-    uint8_t valor = 0;
     uint8_t actual = 0;
-    bool refrescar = true;
     board_t board = BoardCreate();
+    uint8_t screenNumber[4] = {1,2,3,4};
 
 
     while (true) {
 
-        if (refrescar){
-            refrescar = false;
-            clearScreen();
-            WriteNumber(valor);
-            SelectDigit(actual);
-        }
+        clearScreen();
+        WriteNumber(screenNumber[actual]);
+        SelectDigit(actual);
 
-        if (DigitalInputHasActivated(board->setTime)) {
-            if (valor == 9) {
-                valor = 0;
-            } else {
-                valor = valor + 1;
-            }
-            refrescar = true;
-        }
-
-        if (DigitalInputHasActivated(board->setAlarm)) {
-            if (valor == 0) {
-                valor = 9;
-            } else {
-                valor = valor - 1;
-            }
-            refrescar = true;
-        }
-        if (DigitalInputHasActivated(board->increment)) {
-            if (actual == 3) {
+        if (actual == 3) {
                 actual = 0;
-            } else {
-                actual = actual + 1;
-            }
-            refrescar = true;
+        } else {
+            actual = actual + 1;
         }
 
-        if (DigitalInputHasActivated(board->decrement)) {
-            if (actual == 0) {
-                actual = 3;
-            } else {
-                actual = actual - 1;
-            }
-            refrescar = true;
-        }
+        // if (DigitalInputHasActivated(board->setTime)) {
+        //     if (valor == 9) {
+        //         valor = 0;
+        //     } else {
+        //         valor = valor + 1;
+        //     }
+        //     refrescar = true;
+        // }
 
-        for (int index = 0; index < 100; index++) {
-            for (int delay = 0; delay < 25000; delay++) {
+        // if (DigitalInputHasActivated(board->setAlarm)) {
+        //     if (valor == 0) {
+        //         valor = 9;
+        //     } else {
+        //         valor = valor - 1;
+        //     }
+        //     refrescar = true;
+        // }
+        // if (DigitalInputHasActivated(board->increment)) {
+        //     if (actual == 3) {
+        //         actual = 0;
+        //     } else {
+        //         actual = actual + 1;
+        //     }
+        //     refrescar = true;
+        // }
+
+        // if (DigitalInputHasActivated(board->decrement)) {
+        //     if (actual == 0) {
+        //         actual = 3;
+        //     } else {
+        //         actual = actual - 1;
+        //     }
+        //     refrescar = true;
+        // }
+
+        // for (int index = 0; index < 100; index++) {
+            for (int delay = 0; delay < 2500; delay++) {
                 __asm("NOP");
             }
-        }
+        // }
     }
 }
 
