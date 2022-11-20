@@ -43,7 +43,20 @@
 #include <stdbool.h>
 #include <bsp.h>
 
+#include "poncho.h"
+#include "chip.h"
+
 /* === Macros definitions ====================================================================== */
+
+// Definiciones de bits asociados a cada segmento para construir los numeros
+#define SEGMENT_A (1 << 0)
+#define SEGMENT_B (1 << 1)
+#define SEGMENT_C (1 << 2)
+#define SEGMENT_D (1 << 3)
+#define SEGMENT_E (1 << 4)
+#define SEGMENT_F (1 << 5)
+#define SEGMENT_G (1 << 6)
+#define SEGMENT_P (1 << 7)
 
 /* === Private data type declarations ========================================================== */
 
@@ -51,62 +64,90 @@
 
 /* === Private function declarations =========================================================== */
 
+static const uint8_t NUMBERS[] = {
+    SEGMENT_A | SEGMENT_B | SEGMENT_C | SEGMENT_D | SEGMENT_E | SEGMENT_F,                      // 0
+    SEGMENT_B | SEGMENT_C,                                                                      // 1
+    SEGMENT_A | SEGMENT_B | SEGMENT_G | SEGMENT_E | SEGMENT_D,                                  // 2
+    SEGMENT_A | SEGMENT_B | SEGMENT_C | SEGMENT_D | SEGMENT_G,                                  // 3
+    SEGMENT_B | SEGMENT_C | SEGMENT_F | SEGMENT_G,                                              // 4
+    SEGMENT_A | SEGMENT_C | SEGMENT_D | SEGMENT_F | SEGMENT_G,                                  // 5
+    SEGMENT_A | SEGMENT_C | SEGMENT_D | SEGMENT_E | SEGMENT_F | SEGMENT_G,                      // 6
+    SEGMENT_A | SEGMENT_B | SEGMENT_C,                                                          // 7
+    SEGMENT_A | SEGMENT_B | SEGMENT_C | SEGMENT_D | SEGMENT_E | SEGMENT_F | SEGMENT_G,          // 8
+    SEGMENT_A | SEGMENT_B | SEGMENT_C | SEGMENT_F | SEGMENT_G                                   // 9
+};
 /* === Public variable definitions ============================================================= */
 
 /* === Private variable definitions ============================================================ */
 
 /* === Private function implementation ========================================================= */
 
+void clearScreen(void){
+    Chip_GPIO_ClearValue(LPC_GPIO_PORT, DIGITS_GPIO, DIGITS_MASK);
+    Chip_GPIO_ClearValue(LPC_GPIO_PORT, SEGMENTS_GPIO, SEGMENTS_MASK);
+};
+
+void WriteNumber(uint8_t number){
+    Chip_GPIO_SetValue(LPC_GPIO_PORT, SEGMENTS_GPIO, NUMBERS[number]);
+};
+
+void SelectDigit(uint8_t digit){
+    Chip_GPIO_SetValue(LPC_GPIO_PORT, DIGITS_GPIO, (1 << digit));
+};
+
 /* === Public function implementation ========================================================= */
 
 int main(void) {
 
-    // int divisor  = 0;
+    uint8_t valor = 0;
+    uint8_t actual = 0;
+    bool refrescar = true;
     board_t board = BoardCreate();
+
 
     while (true) {
 
-        if (DigitalInputGetState(board->setTime) == 0) {
-            DigitalOutputActivate(board->ledVerde);
-        } else {
-            DigitalOutputDeactivate(board->ledVerde);
+        if (refrescar){
+            refrescar = false;
+            clearScreen();
+            WriteNumber(valor);
+            SelectDigit(actual);
         }
 
-        if (DigitalInputGetState(board->setAlarm) == 0) {
-            DigitalOutputActivate(board->ledAmar);
-        } else {
-            DigitalOutputDeactivate(board->ledAmar);
+        if (DigitalInputHasActivated(board->setTime)) {
+            if (valor == 9) {
+                valor = 0;
+            } else {
+                valor = valor + 1;
+            }
+            refrescar = true;
         }
 
-        if (DigitalInputGetState(board->decrement) == 0) {
-            DigitalOutputActivate(board->ledRojo);
-        } else {
-            DigitalOutputDeactivate(board->ledRojo);
+        if (DigitalInputHasActivated(board->setAlarm)) {
+            if (valor == 0) {
+                valor = 9;
+            } else {
+                valor = valor - 1;
+            }
+            refrescar = true;
+        }
+        if (DigitalInputHasActivated(board->increment)) {
+            if (actual == 3) {
+                actual = 0;
+            } else {
+                actual = actual + 1;
+            }
+            refrescar = true;
         }
 
-        if (DigitalInputGetState(board->increment) == 0) {
-            DigitalOutputActivate(board->ledRed);
-        } else {
-            DigitalOutputDeactivate(board->ledRed);
+        if (DigitalInputHasActivated(board->decrement)) {
+            if (actual == 0) {
+                actual = 3;
+            } else {
+                actual = actual - 1;
+            }
+            refrescar = true;
         }
-
-        if (DigitalInputGetState(board->accept) == 0) {
-            DigitalOutputActivate(board->ledGreen);
-        } else {
-            DigitalOutputDeactivate(board->ledGreen);
-        }
-
-        if (DigitalInputGetState(board->cancel) == 0) {
-            DigitalOutputActivate(board->ledBlue);
-        } else {
-            DigitalOutputDeactivate(board->ledBlue);
-        }
-
-        // divisor++;
-        // if (divisor == 5) {
-        //     divisor = 0;
-        //     DigitalOutputToggle(board->ledVerde);
-        // }
 
         for (int index = 0; index < 100; index++) {
             for (int delay = 0; delay < 25000; delay++) {
