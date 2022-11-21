@@ -79,6 +79,18 @@ extern "C" {
 // Referencia a descriptor para gestionar una pantalla de siete segmentos multiplexada
 typedef struct display_s * display_t; 
 
+typedef void(* display_screen_off_t)(void);
+
+typedef void(* display_number_on_t)(uint8_t number);
+
+typedef void(* display_digit_on_t)(uint8_t digit);
+
+typedef struct display_driver_s {
+    display_screen_off_t ScreenTurnOff;
+    display_number_on_t ScreenTurnOn;
+    display_digit_on_t DigitTurnOn;
+} const * display_driver_t;
+
 /* === Declaraciones de variables publicas ================================= */
 
 /**
@@ -87,7 +99,7 @@ typedef struct display_s * display_t;
  * @param digits        Cantidad de digitos que forman la pantalla
  * @return display_t    Puntero al descriptor de la pantalla creada 
  */
-display_t DisplayCreate(uint8_t digits);
+display_t DisplayCreate(uint8_t digits, display_driver_t driver);
 
 /**
  * @brief Funcion para escribir un numero BCD en la pantalla de siete segmentos
