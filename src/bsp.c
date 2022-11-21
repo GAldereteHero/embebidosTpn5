@@ -70,6 +70,10 @@ static void SegmentsInit(void);
 static void BuzzerInit(void);
 static void TecsInit(void);
 static void CiaaLedsInit(void);
+static void displayInit(void);
+static void clearScreen(void);
+static void WriteNumber(uint8_t number);
+static void SelectDigit(uint8_t digit);
 
 /* === Definiciones de variables privadas ================================== */
 
@@ -174,6 +178,30 @@ void CiaaLedsInit(void){
     board.ledVerde = DigitalOutputCreate(LED_3_GPIO, LED_3_BIT);
 }
 
+void displayInit(void){
+
+    static const struct display_driver_s display_driver = {
+        .ScreenTurnOff = clearScreen,
+        .ScreenTurnOn = WriteNumber,
+        .DigitTurnOn = SelectDigit,
+    };
+
+    board.display = DisplayCreate(4, &display_driver);
+}
+
+void clearScreen(void){
+    Chip_GPIO_ClearValue(LPC_GPIO_PORT, DIGITS_GPIO, DIGITS_MASK);
+    Chip_GPIO_ClearValue(LPC_GPIO_PORT, SEGMENTS_GPIO, SEGMENTS_MASK);
+};
+
+void WriteNumber(uint8_t number){
+    Chip_GPIO_SetValue(LPC_GPIO_PORT, SEGMENTS_GPIO, number);
+};
+
+void SelectDigit(uint8_t digit){
+    Chip_GPIO_SetValue(LPC_GPIO_PORT, DIGITS_GPIO, (1 << digit));
+};
+
 /* === Definiciones de funciones publicas ================================== */
 
 board_t BoardCreate(void){
@@ -182,7 +210,7 @@ board_t BoardCreate(void){
     BuzzerInit();
     TecsInit();
     CiaaLedsInit();
-    
+    displayInit();
     return &board;
 }
 

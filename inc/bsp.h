@@ -57,6 +57,7 @@
 
 #include "digital.h"
 #include "ciaa.h"
+#include "screen.h"
 
 /* === Cabecera C++ ======================================================== */
 #ifdef __cplusplus
@@ -85,6 +86,8 @@ typedef struct board_s
     digital_input_t cancel;
 
     digital_output_t buzzer;
+
+    display_t display;
 
 } const * board_t;
 

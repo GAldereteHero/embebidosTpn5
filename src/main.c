@@ -62,80 +62,21 @@
 
 /* === Private function implementation ========================================================= */
 
-void clearScreen(void){
-    Chip_GPIO_ClearValue(LPC_GPIO_PORT, DIGITS_GPIO, DIGITS_MASK);
-    Chip_GPIO_ClearValue(LPC_GPIO_PORT, SEGMENTS_GPIO, SEGMENTS_MASK);
-};
-
-void WriteNumber(uint8_t number){
-    Chip_GPIO_SetValue(LPC_GPIO_PORT, SEGMENTS_GPIO, number);
-};
-
-void SelectDigit(uint8_t digit){
-    Chip_GPIO_SetValue(LPC_GPIO_PORT, DIGITS_GPIO, (1 << digit));
-};
-
 /* === Public function implementation ========================================================= */
 
 int main(void) {
 
-    static const struct display_driver_s display_driver = {
-        .ScreenTurnOff = clearScreen,
-        .ScreenTurnOn = WriteNumber,
-        .DigitTurnOn = SelectDigit,
-    };
-
-    uint8_t number[4] = {1,2,3,4};
+    uint8_t number[4] = {9,8,7,6};
     board_t board = BoardCreate();
-
-    display_t display = DisplayCreate(4, &display_driver);
-    
-    DisplayWriteBCD(display, number, sizeof(number));
+    DisplayWriteBCD(board->display, number, sizeof(number));
 
     while (true) {
 
-        DisplayRefresh(display);
-
-        // if (DigitalInputHasActivated(board->setTime)) {
-        //     if (valor == 9) {
-        //         valor = 0;
-        //     } else {
-        //         valor = valor + 1;
-        //     }
-        //     refrescar = true;
-        // }
-
-        // if (DigitalInputHasActivated(board->setAlarm)) {
-        //     if (valor == 0) {
-        //         valor = 9;
-        //     } else {
-        //         valor = valor - 1;
-        //     }
-        //     refrescar = true;
-        // }
-        // if (DigitalInputHasActivated(board->increment)) {
-        //     if (actual == 3) {
-        //         actual = 0;
-        //     } else {
-        //         actual = actual + 1;
-        //     }
-        //     refrescar = true;
-        // }
-
-        // if (DigitalInputHasActivated(board->decrement)) {
-        //     if (actual == 0) {
-        //         actual = 3;
-        //     } else {
-        //         actual = actual - 1;
-        //     }
-        //     refrescar = true;
-        // }
-
-        // for (int index = 0; index < 100; index++) {
-            for (int delay = 0; delay < 2500; delay++) {
-                __asm("NOP");
-            }
-        // }
+        DisplayRefresh(board->display);
+        
+        for (int delay = 0; delay < 2500; delay++) {
+            __asm("NOP");
+        }
     }
 }
 
