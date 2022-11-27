@@ -7,6 +7,12 @@
 
 clock_t reloj;
 
+void SimulateSeconds( int seconds){
+        for (int i = 0; i < seconds * TICKS_PER_SECOND; i++){
+        ClockNewTick(reloj);
+    }
+}
+
 /**
  * @brief Funcion que Ceedling ejecuta antes de realizar cada una de las pruebas
  * 
@@ -38,10 +44,8 @@ void test_set_up_current_time(void){
 void test_one_second_elapsed(void){
     static const uint8_t ESPERADO[] = {1,2,3,4,0,1};
     uint8_t hora[6];
-
-    for (int i = 0; i < TICKS_PER_SECOND; i++){
-        ClockNewTick(reloj);
-    }
+    
+    SimulateSeconds(1);
     ClockGetTime(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
 }
@@ -50,10 +54,8 @@ void test_one_second_elapsed(void){
 void test_ten_second_elapsed(void){
     static const uint8_t ESPERADO[] = {1,2,3,4,1,0};
     uint8_t hora[6];
-
-    for (int i = 0; i < 10 * TICKS_PER_SECOND; i++){
-        ClockNewTick(reloj);
-    }
+    
+    SimulateSeconds(10);
     ClockGetTime(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
 }
