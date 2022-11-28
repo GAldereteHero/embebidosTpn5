@@ -44,7 +44,7 @@ void test_set_up_current_time(void){
 void test_one_second_elapsed(void){
     static const uint8_t ESPERADO[] = {1,2,3,4,0,1};
     uint8_t hora[6];
-    
+
     SimulateSeconds(1);
     ClockGetTime(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
@@ -56,6 +56,16 @@ void test_ten_second_elapsed(void){
     uint8_t hora[6];
     
     SimulateSeconds(10);
+    ClockGetTime(reloj, hora, sizeof(hora));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
+}
+
+// Simular el paso de n ciclos de reloj, consultar la hora y verificar que avanzo 1 minuto 
+void test_one_minute_elapsed(void){
+    static const uint8_t ESPERADO[] = {1,2,3,5,0,0};
+    uint8_t hora[6];
+    
+    SimulateSeconds(60);
     ClockGetTime(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
 }

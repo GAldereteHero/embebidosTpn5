@@ -7,6 +7,10 @@
 
 #define SECONDS_UNITS 5
 
+#define SECONDS_TENS 4
+
+#define MINUTE_UNITS 3
+
 struct clock_s{
     bool valid;
     uint16_t ticks_per_second;
@@ -41,8 +45,11 @@ void ClockNewTick(clock_t clock){
         clock->time[SECONDS_UNITS]++;
         if (clock->time[SECONDS_UNITS] == 10){
             clock->time[SECONDS_UNITS] = 0;
-            clock->time[4]++;
+            clock->time[SECONDS_TENS]++;
         }
-        
+        if (clock->time[SECONDS_TENS] == 6){
+            clock->time[SECONDS_TENS] = 0;
+            clock->time[MINUTE_UNITS]++;
+        }
     }
 }
