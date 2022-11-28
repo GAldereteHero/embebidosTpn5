@@ -69,3 +69,23 @@ void test_one_minute_elapsed(void){
     ClockGetTime(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
 }
+
+// Simular el paso de n ciclos de reloj, consultar la hora y verificar que avanzo 10 minutos 
+void test_ten_minutes_elapsed(void){
+    static const uint8_t ESPERADO[] = {1,2,4,4,0,0};
+    uint8_t hora[6];
+    
+    SimulateSeconds(10 * 60);
+    ClockGetTime(reloj, hora, sizeof(hora));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
+}
+
+// Simular el paso de n ciclos de reloj, consultar la hora y verificar que avanzo 1 hora 
+void test_one_hour_elapsed(void){
+    static const uint8_t ESPERADO[] = {1,3,3,4,0,0};
+    uint8_t hora[6];
+    
+    SimulateSeconds(60 * 60);
+    ClockGetTime(reloj, hora, sizeof(hora));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
+}
