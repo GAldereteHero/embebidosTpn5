@@ -99,3 +99,44 @@ void test_ten_hours_elapsed(void){
     ClockGetTime(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
 }
+
+
+// Simular el paso de n ciclos de reloj, consultar la hora y verificar si 23.59 a 00.00.00
+void test_new_day(void){
+    static const uint8_t INICIAL[] = {2,3,5,9};
+    static const uint8_t ESPERADO[] = {0,0,0,0,0,0};
+    ClockSetupTime(reloj, INICIAL, sizeof(INICIAL));
+    uint8_t hora[6];
+    
+    SimulateSeconds(60);
+    ClockGetTime(reloj, hora, sizeof(hora));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
+}
+
+// Simular el paso de n ciclos de reloj, consultar la hora y verificar se llego a las 24.00.00
+void test_one_day_elapsed(void){
+    static const uint8_t ESPERADO[] = {1,2,3,4,0,0};
+    uint8_t hora[6];
+    
+    SimulateSeconds((23 * 60 + 60) * 60);
+    ClockGetTime(reloj, hora, sizeof(hora));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
+}
+// Simular el paso de n ciclos de reloj, consultar la hora y verificar 12.34 a 12.33.59 y verificar 12.34 a 12.34.00
+void test_one_day_and_one_second(void){
+    static const uint8_t INICIAL[] = {1,2,3,4};
+    static const uint8_t ESPERADO[] = {1,2,3,4,0,0};
+    uint8_t hora[6];
+
+    SimulateSeconds(23 * 3600 + 59 * 60 + 59);
+    SimulateSeconds(1);
+    ClockGetTime(reloj, hora, sizeof(hora));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
+}
+
+
+
+
+
+
+

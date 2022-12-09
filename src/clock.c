@@ -17,6 +17,10 @@
 
 #define HOURS_TENS 0
 
+#define MAX_HOURS_UNITS_VALUE 4
+
+#define MAX_HOURS_TENS_VALUE 2
+
 struct clock_s{
     bool valid;
     uint16_t ticks_per_second;
@@ -69,5 +73,12 @@ void ClockNewTick(clock_t clock){
                 }
             }
         }
+        if(clock->time[HOURS_TENS] == MAX_HOURS_TENS_VALUE){
+            if(clock->time[HOURS_UNITS] == MAX_HOURS_UNITS_VALUE){
+                clock->time[HOURS_TENS] = START_VALUE;
+                clock->time[HOURS_UNITS] = START_VALUE;
+            }
+        }
     }
+
 }
