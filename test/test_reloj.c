@@ -27,9 +27,11 @@ void setUp(void){
 void test_start_up(void){
     static const uint8_t ESPERADO[] = {0,0,0,0,0,0};
     uint8_t hora[6];
+    uint8_t alarma[4];
     reloj = ClockCreate(TICKS_PER_SECOND); // Recibe por params la cant. de pulsos de reloj que valen 1 segundo
     TEST_ASSERT_FALSE( ClockGetTime(reloj, hora, sizeof(hora)));
     TEST_ASSERT_EQUAL_UINT8_ARRAY( ESPERADO, hora, sizeof(ESPERADO));
+    TEST_ASSERT_FALSE( ClockGetAlarm(reloj, alarma, sizeof(alarma)));
 }
 
 // Configurar la libreria, ajustar la hora (con valores correctos), consultar la hora y tiene que ser valida.
@@ -133,10 +135,3 @@ void test_one_day_and_one_second(void){
     ClockGetTime(reloj, hora, sizeof(hora));
     TEST_ASSERT_EQUAL_UINT8_ARRAY(ESPERADO, hora, sizeof(ESPERADO));
 }
-
-
-
-
-
-
-
